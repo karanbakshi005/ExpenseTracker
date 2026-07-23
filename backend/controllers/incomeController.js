@@ -1,5 +1,5 @@
-import incomeModel from "../../incomeModel.js";
-import XLSX from "xlxs";
+import incomeModel from "../models/incomeModel.js";
+import XLSX from "xlsx";
 
 //add income
 export async function addIncome(req, res) {
@@ -83,7 +83,7 @@ export async function updateIncome(req, res) {
 }
 
 //to delete income
-export async function deleteIncom(req, res) {
+export async function deleteIncome(req, res) {
   try {
     const income = await incomeModel.findByIdAndDelete({ _id: req.params.id });
     if (!income) {
@@ -114,13 +114,32 @@ export async function downloadIncomeExcel(req, res) {
       Description: inc.description,
       Amount: inc.amount,
       Category: inc.category,
-      Date: new Date(inc.date).toLocalDateString(),
+      Date: new Date(inc.date).toLocaleDateString(),
     }));
-    const worksheet = XLSX
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(plainDate);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Income");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", "attachment; filename=income.xlsx");
+    res.end(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: "server Error",
+    });
+  }
+}
+
+export async function getIncomeOverview(req, res) {
+  const userId = req.user._id;
+  try {
+    const income = await incomeModel.find({ userId }).sort({ date: -1 });
+    res.json(income);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
     });
   }
 }
