@@ -32,3 +32,6 @@ const expenseSchema = new mongoose.schema(
     timestamps: true,
   },
 );
+const expenseModel =
+  mongoose.models.income || mongoose.model("income", expenseSchema);
+export default expenseModel;
