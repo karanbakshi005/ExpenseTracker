@@ -56,13 +56,13 @@ export async function updateIncome(req, res) {
 
   try {
     const updateIncome = await incomeModel.findOneAndUpdate(
-      { _id: id, userId }, 
+      { _id: id, userId },
       { description, amount },
       { new: true },
     );
 
     if (!updateIncome) {
-      return
+      return;
       res.status(404).json({
         success: false,
         message: "Income not found",
@@ -119,7 +119,10 @@ export async function downloadIncomeExcel(req, res) {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(plainDate);
     XLSX.utils.book_append_sheet(workbook, worksheet, "incomeModel");
-    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
     res.setHeader("Content-Disposition", "attachment; filename=income.xlsx");
     res.end(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
   } catch (error) {
@@ -130,11 +133,34 @@ export async function downloadIncomeExcel(req, res) {
   }
 }
 
+//to getIncome overview
 export async function getIncomeOverview(req, res) {
-  const userId = req.user._id;
   try {
-    const income = await incomeModel.find({ userId }).sort({ date: -1 });
-    res.json(income);
+    const userId = req.user._id;
+    const { range = "monthly" } = req.query;
+    const { start, end } = getDateRange(range);
+
+    const income = await incomeModel.find({
+      userId,
+      date: { $gte: start, $lte: end },
+    }).sort({ date: -1 });
+
+    const totalIncome = income.reduce((acc, cur) => acc + cur.amount, 0);
+    const averageIncome = incomes.length > 0 ? totalIncome / income.length : 0;
+    const numberOfTransactions = incomes.length;
+
+    const recentTransactions = incomes.slice(0, 9);
+
+    res.json({
+      success: true,
+      data: {
+        totalIncome,
+        averageIncome,
+        numberOfTransactions,
+        recentTransactions,
+        range,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

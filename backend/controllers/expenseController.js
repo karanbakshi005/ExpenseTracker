@@ -57,13 +57,13 @@ export async function updateExpense(req, res) {
 
   try {
     const updateExpense = await updateExpense.findOneAndUpdate(
-      { _id: id, userId }, 
+      { _id: id, userId },
       { description, amount },
       { new: true },
     );
 
     if (!updateExpense) {
-      return
+      return;
       res.status(404).json({
         success: false,
         message: "Expense not found",
@@ -85,8 +85,10 @@ export async function updateExpense(req, res) {
 
 // delete income
 export async function deleteExpense(req, res) {
-     try {
-    const expense = await expenseModel.findByIdAndDelete({ _id: req.params.id });
+  try {
+    const expense = await expenseModel.findByIdAndDelete({
+      _id: req.params.id,
+    });
     if (!income) {
       return res.status(404).json({
         success: false,
@@ -109,25 +111,43 @@ export async function deleteExpense(req, res) {
 //download  file
 
 export async function downloadExpenseExcel(req, res) {
-     const userId = req.user._id;
-      try {
-        const income = await expenseModel.find({ userId }).sort({ date: -1 });
-        const plainDate = expense.map((exp) => ({
-          Description: exp.description,
-          Amount: exp.amount,
-          Category: exp.category,
-          Date: new Date(exp.date).toLocaleDateString(),
-        }));
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.json_to_sheet(plainDate);
-        XLSX.utils.book_append_sheet(workbook, worksheet, "expenseModel");
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        res.setHeader("Content-Disposition", "attachment; filename=expense.xlsx");
-        res.end(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
-      } catch (error) {
-        console.log(error);
-        res.status(500).json({
-          message: "server Error",
-        });
-      }
-}// get expense over view
+  const userId = req.user._id;
+  try {
+    const income = await expenseModel.find({ userId }).sort({ date: -1 });
+    const plainDate = expense.map((exp) => ({
+      Description: exp.description,
+      Amount: exp.amount,
+      Category: exp.category,
+      Date: new Date(exp.date).toLocaleDateString(),
+    }));
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(plainDate);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "expenseModel");
+    XLSX.writeFile(workbook, "expense_details.xlsx");
+    res.download("expense_details.xlsx");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=expense.xlsx");
+    res.end(XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }));
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "server Error",
+    });
+  }
+} // get expense over view
+export async function getExpenseOverview(res, req) {
+  const userId = req.user._id;
+  try {
+    const expense = await expenseModel.find({ userId }).sort({ date: -1 });
+    res.json(expense);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "server Error",
+    });
+  }
+}
