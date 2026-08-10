@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const expenseSchema = new mongoose.schema(
+const expenseSchema = new mongoose.Schema(
   {
     description: {
       type: String,
@@ -33,5 +33,5 @@ const expenseSchema = new mongoose.schema(
   },
 );
 const expenseModel =
-  mongoose.models.income || mongoose.model("income", expenseSchema);
+  mongoose.models.expense || mongoose.model("expense", expenseSchema);
 export default expenseModel;
