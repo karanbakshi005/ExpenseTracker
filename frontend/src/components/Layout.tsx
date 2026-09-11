@@ -1,7 +1,10 @@
+import {styles} from '../assets/dummyStyles'
+import Navbar from './Navbar'
+
 const Layout = ({onLogout, user}) => {
   return (
-    <div>
-      
+    <div className={styles.layout.root}>
+       <Navbar user={user} onLogout={onLogout} />
     </div>
   )
 }
