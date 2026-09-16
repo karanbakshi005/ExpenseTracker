@@ -14,7 +14,7 @@ export const dashboardStyles = {
   // Time frame selector styles
   timeFrameContainer: "flex justify-end mt-4",
   timeFrameWrapper: "flex gap-0 bg-white p-1 -mx-5 rounded-xl border border-gray-200",
-  timeFrameButton: (isActive) => 
+  timeFrameButton: (isActive:boolean) => 
     `px-2.5 py-2 text-sm rounded-lg transition-all ${
       isActive 
         ? "bg-teal-500 text-white" 
@@ -85,7 +85,7 @@ export const dashboardStyles = {
   
   // Empty state styles
   emptyState: "text-center py-8",
-  emptyIconContainer: (color) => `w-16 h-16 mx-auto mb-4 rounded-full ${color} flex items-center justify-center`,
+  emptyIconContainer: (color:string) => `w-16 h-16 mx-auto mb-4 rounded-full ${color} flex items-center justify-center`,
   emptyText: "text-gray-600 font-medium",
   
   // View all button styles
@@ -93,7 +93,7 @@ export const dashboardStyles = {
   viewAllButton: "w-full flex items-center justify-center gap-2 py-3 text-teal-600 font-medium hover:bg-teal-50 rounded-xl transition-colors",
   
   // Icon container styles
-  iconContainer: (color) => `p-2 ${color} rounded-lg`,
+  iconContainer: (color:any) => `p-2 ${color} rounded-lg`,
   
   // Specific icon colors
   walletIconContainer: "p-2 bg-teal-100 rounded-lg",
@@ -251,10 +251,7 @@ export const expensePageStyles = {
   
   // Export button for chart header (different from existing exportButton)
   chartExportButton: "flex items-center gap-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg transition-all text-sm hover:shadow-md",
-  
-  // Additional empty state style 
-  emptyStateSubtext: "text-sm text-gray-500 mt-2",
-  
+
   // Timeframe positioning 
   timeframePositioning: "flex px-10 -mx-14 justify-center lg:-mx-0 md:-mx-0 lg:justify-end md:justify-end mt-4",
   
@@ -329,11 +326,11 @@ export const modalStyles = {
   // Form elements
   form: "space-y-4",
   label: "block text-sm font-medium text-gray-700 mb-1",
-  input: (ringColor) => `w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${ringColor}`,
+  input: (ringColor:string): string => `w-full border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${ringColor}`,
   
   // Type buttons
   typeButtonContainer: "flex gap-4",
-  typeButton: (isSelected, color) => 
+  typeButton: (isSelected :any, color: any) => 
     `flex-1 py-2 rounded-lg font-medium ${
       isSelected 
         ? `${color} text-white shadow-md` 
@@ -341,7 +338,7 @@ export const modalStyles = {
     }`,
   
   // Submit button
-  submitButton: (color) => `w-full text-white py-3 rounded-lg font-medium mt-4 shadow-md hover:shadow-lg transition-all ${color}`,
+  submitButton: (color:any) => `w-full text-white py-3 rounded-lg font-medium mt-4 shadow-md hover:shadow-lg transition-all ${color}`,
   
   // Color classes
   colorClasses: {
@@ -429,7 +426,7 @@ export const navbarStyles = {
   userTextContainer: "text-left hidden md:block",
   userName: "text-sm font-medium text-gray-800 truncate max-w-[120px]",
   userEmail: "text-xs text-gray-500 truncate max-w-[120px]",
-  chevronIcon: (isOpen) => `w-4 h-4 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`,
+  chevronIcon: (isOpen:string):string => `w-4 h-4 text-gray-500 transition-transform ${isOpen ? "rotate-180" : ""}`,
   
   // Dropdown menu styles
   dropdownMenu: "absolute top-14 right-0 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-50",
@@ -496,7 +493,7 @@ export const signupStyles = {
 
 export const transactionItemStyles = {
   // Container styles
-  container: (isEditing, classes) => 
+  container: (isEditing: any, classes: any) => 
     `flex flex-col md:flex-row items-stretch justify-between gap-3 p-4 rounded-xl border border-gray-100 mb-3 last:mb-0 ${isEditing ? classes.bg : "hover:bg-gray-50"}`,
   
   // Layout styles
@@ -506,7 +503,7 @@ export const transactionItemStyles = {
   buttonsContainer: "flex gap-1 flex-shrink-0",
   
   // Icon styles
-  iconContainer: (iconClass, classes) => `${iconClass} ${classes.iconBg}`,
+  iconContainer: (iconClass:any, classes:any):string => `${iconClass} ${classes.iconBg}`,
   
   // Content styles
   contentContainer: "min-w-0 flex-1",
@@ -514,22 +511,22 @@ export const transactionItemStyles = {
   details: "text-xs text-gray-500 mt-1 truncate",
   
   // Input styles
-  input: (hasError, classes) => 
+  input: (hasError:any, classes: any) => 
     `w-full bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-1 ${hasError ? "border-red-500 ring-red-500" : `${classes.border} ${classes.ring}`}`,
-  amountInput: (hasError, classes) => 
+  amountInput: (hasError: any, classes: any) => 
     `w-full max-w-[120px] bg-white rounded-lg px-3 py-2 focus:outline-none focus:ring-1 ${hasError ? "border-red-500 ring-red-500" : `${classes.border} ${classes.ring}`}`,
   
   // Error styles
   errorText: "text-xs text-red-600 mt-1",
   
   // Amount display
-  amountText: (amountClass, classes) => `${amountClass} ${classes.text}`,
+  amountText: (amountClass:any, classes:any) => `${amountClass} ${classes.text}`,
   
   // Button styles
-  saveButton: (classes) => `p-2 ${classes.button} rounded-lg`,
+  saveButton: (classes:any) => `p-2 ${classes.button} rounded-lg`,
   cancelButton: "p-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400",
-  editButton: (classes) => `p-2 ${classes.text} rounded-lg hover:${classes.bg}`,
-  deleteButton: (classes) => `p-2 ${classes.text} rounded-lg hover:${classes.bg}`
+  editButton: (classes:any) => `p-2 ${classes.text} rounded-lg hover:${classes.bg}`,
+  deleteButton: (classes:any) => `p-2 ${classes.text} rounded-lg hover:${classes.bg}`
 };
 
 // Centralized styles for the application
@@ -624,7 +621,7 @@ export const sidebarStyles = {
 };
 
 // Helper function to combine class names
-export const cn = (...classes) => classes.filter(Boolean).join(" ");
+export const cn = (...classes:(string | false | null | undefined)[]) => classes.filter(Boolean).join(" ");
 
 // assets/dummyStyles.js
 
@@ -632,7 +629,7 @@ export const styles = {
   // Layout and Container Styles
   layout: {
     root: "min-h-screen bg-gradient-to-br from-gray-50 to-gray-100",
-    mainContainer: (sidebarCollapsed) => 
+    mainContainer: (sidebarCollapsed:string) => 
       `p-4 pt-6 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'}`,
   },
 
@@ -650,8 +647,8 @@ export const styles = {
     cardHeader: "flex justify-between items-start",
     cardTitle: "text-sm text-gray-600",
     cardValue: "text-2xl font-bold text-gray-800 mt-1",
-    iconContainer: (color) => `bg-${color}-100 p-2 rounded-lg`,
-    icon: (color) => `w-5 h-5 text-${color}-600`,
+    iconContainer: (color: string) => `bg-${color}-100 p-2 rounded-lg`,
+    icon: (color: string) => `w-5 h-5 text-${color}-600`,
     cardFooter: "text-xs text-gray-500 mt-3",
   },
 
@@ -675,17 +672,17 @@ export const styles = {
     cardHeader: "flex justify-between items-center mb-4",
     cardTitle: "text-md md:text-xl lg:text-xl xl:text-xl font-bold text-gray-800 flex items-center gap-3",
     refreshButton: "p-2 rounded-lg hover:bg-gray-100 transition-colors",
-    refreshIcon: (loading) => `w-5 h-5 text-gray-500 ${loading ? 'animate-spin' : ''}`,
+    refreshIcon: (loading: string) => `w-5 h-5 text-gray-500 ${loading ? 'animate-spin' : ''}`,
     dataStackingInfo: "flex items-center gap-2 text-xs text-gray-500 mb-4 bg-blue-50 p-2 rounded-lg",
     dataStackingIcon: "w-4 h-4 text-blue-500",
     listContainer: "space-y-4 max-h-[500px] -mx-5 overflow-y-auto pr-2",
     transactionItem: "flex items-center lg:flex-col xl:flex-row md:flex-row justify-between p-1 -mx-0 lg:p-4 md:p-4 hover:bg-gray-50 rounded-xl transition-all duration-300 border border-gray-100",
-    iconWrapper: (type) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
+    iconWrapper: (type:string) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
     icon: "w-4 h-4",
     details: "min-w-0",
     description: "font-medium text-gray-800 truncate max-w-[120px]",
     meta: "text-xs text-gray-500 mt-1",
-    amount: (type) => `font-semibold ${type === 'income' ? 'text-teal-600' : 'text-orange-600'}`,
+    amount: (type:string) => `font-semibold ${type === 'income' ? 'text-teal-600' : 'text-orange-600'}`,
     emptyState: "text-center py-8",
     emptyIconContainer: "w-16 h-16 mx-auto mb-4 rounded-full bg-purple-100 flex items-center justify-center",
     emptyIcon: "w-8 h-8 text-purple-500",
@@ -715,9 +712,9 @@ export const styles = {
   // Color Helpers
   colors: {
     transaction: {
-      text: (type) => type === 'income' ? 'text-teal-600' : 'text-orange-600',
-      bg: (type) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
+      text: (type:string) => type === 'income' ? 'text-teal-600' : 'text-orange-600',
+      bg: (type: string) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
     },
-    expenseChange: (change) => change > 0 ? 'text-orange-600' : 'text-green-600',
+    expenseChange: (change:number) => change > 0 ? 'text-orange-600' : 'text-green-600',
   },
 };

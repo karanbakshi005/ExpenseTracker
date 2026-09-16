@@ -1,19 +1,23 @@
-import { Route, BrowserRouter as Routes } from "react-router-dom";
-import Layout from "./components/Layout.tsx";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard.tsx";
+import { useState } from "react";
+import type { User } from "./types";
+
+
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null); 
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const clearAuth = () => {
     try {
-      localStorage.removeItem("user");
+      localStorage.removeItem("  ");
       localStorage.removeItem("token");
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");
     } catch (error) {
-      console.error("clearAuth error:", err);
+      console.error("clearAuth error:", error);
     }
     setUser(null);
     setToken(null); 
@@ -26,14 +30,18 @@ const App = () => {
   };
 
   return (
-    <>
-      <Routes>
-        <Route element={<Layout />}>
+    <Routes>
+      <Route element={<Layout user={user} onLogout={handleLogout} />}>
           <Route path="/" element={<Dashboard />} />
-        </Route>
-      </Routes>
-    </>
+      </Route>
+    </Routes>
   );
 };
 
-export default App;
+const AppWithRouter = () => (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+export default AppWithRouter;
