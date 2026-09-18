@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard.tsx";
 import { useState } from "react";
@@ -31,17 +31,11 @@ const App = () => {
 
   return (
     <Routes>
-      <Route element={<Layout user={user} onLogout={handleLogout} />}>
+      <Route element={<Layout/>}>
           <Route path="/" element={<Dashboard />} />
       </Route>
     </Routes>
   );
 };
 
-const AppWithRouter = () => (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
-
-export default AppWithRouter;
+export default App;

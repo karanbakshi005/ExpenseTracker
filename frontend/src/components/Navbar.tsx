@@ -1,21 +1,20 @@
 import { navbarStyles } from "../assets/dummyStyles.ts";
-import img1 from "../assets/images/logo.png";
+import img1 from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import type { LayoutProps } from "../types";
+import { useRef, useState } from "react";
 
-const Navbar = ({ user, onLogout }: LayoutProps) => {
+const Navbar = ({ user:propuser, onLogout }: LayoutProps) => {
   const navigate = useNavigate();
-  const menuRef = useRef();
+  const menuRef = useRef<HTMLDivElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const user = propuser || {
     name: "",
-    emial: "",
+    email: "",
   };
 
-  const toggleMenu =()=>{
-
-  }
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
     <header className={navbarStyles.header}>
@@ -30,10 +29,11 @@ const Navbar = ({ user, onLogout }: LayoutProps) => {
         {user && (
           <div className={navbarStyles.userContainer} ref={menuRef}>
             <button className={navbarStyles.userButton} onClick={toggleMenu}>
-              <div className= "relative">
+              <div className="relative">
                 <div className={navbarStyles.userAvatar}>
-                  {user?.name?.[0]?.toUpperCase() || "U" }
+                  {user?.name?.[0]?.toUpperCase() || "U"}
                 </div>
+                <div className={navbarStyles.statusIndicator}></div>
               </div>
             </button>
           </div>
