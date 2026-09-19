@@ -19,9 +19,7 @@ const Navbar = ({ user:propuser, onLogout }: LayoutProps) => {
   return (
     <header className={navbarStyles.header}>
       <div className={navbarStyles.container}>
-        <div
-          onClick={() => navigate("/")}
-          className={navbarStyles.logoContainer}
+        <div className={navbarStyles.logoImage}
         >
           <img src={img1} alt="Logo" />
         </div>

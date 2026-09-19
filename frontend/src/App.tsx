@@ -12,7 +12,7 @@ const App = () => {
 
   const clearAuth = () => {
     try {
-      localStorage.removeItem("  ");
+      localStorage.removeItem("");
       localStorage.removeItem("token");
       sessionStorage.removeItem("user");
       sessionStorage.removeItem("token");
@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route element={<Layout/>}>
+      <Route element={<Layout user={user} onLogout={handleLogout} />}>
           <Route path="/" element={<Dashboard />} />
       </Route>
     </Routes>

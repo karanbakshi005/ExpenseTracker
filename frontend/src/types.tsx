@@ -6,6 +6,6 @@ export interface User {
 export type OnLogout = () => void;
 
 export interface LayoutProps {
-  user:User;
+  user: User | null;
   onLogout: OnLogout;
 }
