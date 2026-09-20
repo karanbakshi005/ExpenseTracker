@@ -3,7 +3,7 @@ import img1 from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import type { LayoutProps } from "../types";
 import { useRef, useState } from "react";
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, UserRound  } from "lucide-react";
 
 const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
-    
     <header className={navbarStyles.header}>
       <div className={navbarStyles.container}>
         <div
@@ -45,7 +44,39 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
                   {user?.email || "user@expensetracker.com"}
                 </p>
               </div>
-   <ChevronDown />            </button>
+              <ChevronDown className={navbarStyles.chevronIcon(String(menuOpen))} />
+            </button>
+            {menuOpen && (
+              <div className={navbarStyles.dropdownMenu}>
+                <div className={navbarStyles.dropdownHeader}>
+                  <div className="flex items-center gap-3">
+                    <div className={navbarStyles.dropdownAvatar}>
+                      {user?.name?.[0]?.toUpperCase() || "U"}
+                    </div>
+                    <div>
+                      <div className={navbarStyles.dropdownName}>
+                        {user?.name || "User"}
+                      </div>
+                      <div className={navbarStyles.dropdownEmail}>
+                        {user?.email || "user@expensetracker.com"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className={navbarStyles.menuItemContainer}>
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate("/profile");
+                    }}
+                    className={navbarStyles.menuItem}
+                  >
+                    <UserRound className="w-4 h-4" />
+                    <span>My Profile</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
