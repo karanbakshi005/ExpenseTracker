@@ -2,8 +2,12 @@ import { navbarStyles } from "../assets/dummyStyles";
 import img1 from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import type { LayoutProps } from "../types";
-import { useRef, useState } from "react";
-import { ChevronDown, UserRound  } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, HandHelping, UserRound  } from "lucide-react";
+import { LogOut } from 'lucide-react';
+import axios from "axios";
+
+const BASE_URL= 'http://localhost:4000/api';
 
 const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
   const navigate = useNavigate();
@@ -14,6 +18,22 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
     name: "",
     email: "",
   };
+
+ //logout from the server
+ useEffect(() => {
+  const fetchUserData = async ()=>{
+    try{
+      const token = localStorage.getItem("token");
+      if(!token)return;
+
+      const response = await axios.get(`${BASE_URL}/user/me`)
+    }
+    catch(error){
+      
+    }
+  }
+ }
+)[]
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
@@ -75,6 +95,13 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
                     <span>My Profile</span>
                   </button>
                 </div>
+                    <div className={navbarStyles.menuItemBorder}>
+                      <button onClick={handleLogout} className={navbarStyles.logoutButton}>
+                        <LogOut className="w-4 h-4"/>
+                        <span>Log out</span>
+                      </button>
+                    </div>
+
               </div>
             )}
           </div>
