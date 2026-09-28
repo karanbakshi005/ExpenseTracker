@@ -3,39 +3,65 @@ import img1 from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import type { LayoutProps } from "../types";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, HandHelping, UserRound  } from "lucide-react";
-import { LogOut } from 'lucide-react';
+import { ChevronDown, HandHelping, UserRound } from "lucide-react";
+import { LogOut } from "lucide-react";
 import axios from "axios";
 
-const BASE_URL= 'http://localhost:4000/api';
+
+const BASE_URL = "http://localhost:4000/api";
 
 const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
   const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(
+    propuser || {
+      name: "",
+      email: "",
+    },
+  );
 
-  const user = propuser || {
-    name: "",
-    email: "",
-  };
+  //logout from the server
+  (useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
- //logout from the server
- useEffect(() => {
-  const fetchUserData = async ()=>{
-    try{
-      const token = localStorage.getItem("token");
-      if(!token)return;
+        const response = await axios.get(`${BASE_URL}/user/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const userData = response.data.user || response.data;
+        setUser(userData);
+      } catch (error) {
+        console.error("Failed to load Profile", error);
+      }
+    };
 
-      const response = await axios.get(`${BASE_URL}/user/me`)
+    if (!propuser) {
+      fetchUserData();
     }
-    catch(error){
-      
-    }
-  }
- }
-)[]
+  }),
+    [propuser]);
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
+
+  const handleLogout = () => {
+    setMenuOpen(false);
+    localStorage.removeItem("token");
+    onLogout?.();
+    navigate("/Login")
+  }
+
+useEffect(() =>{
+const handleClickOutside = (event: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+  setMenuOpen(false);
+}
+}
+document.addEventListener("mousedown", handleClickOutside);
+return() => {document.removeEventListener("mousedown", handleClickOutside);}
+},[])
+
 
   return (
     <header className={navbarStyles.header}>
@@ -64,7 +90,9 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
                   {user?.email || "user@expensetracker.com"}
                 </p>
               </div>
-              <ChevronDown className={navbarStyles.chevronIcon(String(menuOpen))} />
+              <ChevronDown
+                className={navbarStyles.chevronIcon(String(menuOpen))}
+              />
             </button>
             {menuOpen && (
               <div className={navbarStyles.dropdownMenu}>
@@ -95,13 +123,15 @@ const Navbar = ({ user: propuser, onLogout }: LayoutProps) => {
                     <span>My Profile</span>
                   </button>
                 </div>
-                    <div className={navbarStyles.menuItemBorder}>
-                      <button onClick={handleLogout} className={navbarStyles.logoutButton}>
-                        <LogOut className="w-4 h-4"/>
-                        <span>Log out</span>
-                      </button>
-                    </div>
-
+                <div className={navbarStyles.menuItemBorder}>
+                  <button
+                    onClick={handleLogout}
+                    className={navbarStyles.logoutButton}
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Log out</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
